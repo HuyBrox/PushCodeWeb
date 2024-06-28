@@ -1,0 +1,144 @@
+extends ../../layouts/default.pug
+include ../../mixins/filter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
+block main
+    //- kiểm tra xem có th nào được truyền từ req có tên là success không nếu có thì hiển thị thông báo
+    +alert-success(5000)
+
+    h1 Trang sản phẩm
+    .card.mb-3
+        h4.card-header.text-info Bộ lọc và tìm kiếm
+        .card-body
+            .row
+                .col-lg-6.col-md-12.mb-3.pt-2
+                    +filer-status(filterStatus)
+                    //- form.form-inline.mb-2
+                    //-     label.font-weight-bold.mr-2 Trạng thái:
+                    //-     select.form-control(name="status" style="max-width: 220px; width: 100%;")
+                    //-         option(value="all" selected=(currentStatus === 'all')) Tất cả
+                    //-         option(value="Active" selected=(currentStatus === 'Active')) Đang bán
+                    //-         option(value="Inactive" selected=(currentStatus === 'Inactive')) Đã dừng bán
+                    //-     button.btn.btn-primary.ml-2 Lọc
+                .col-lg-6.col-md-12
+                    +search(search)
+    .card.mb-3
+        h4.card-header.text-info Danh sách sản phẩm
+        .card-body
+
+            .row.row-custom
+                form.col-8(
+                    action=``
+                    method="POST"
+                    path=`${prefixAdmin}/product/`
+                    form-change-multi
+                )
+                    .d-flex.px-4.py-1
+                        .form-group
+                            select(name="type" class="form-control")
+                                option(value="") -- Change multi --
+                                option(value="Active") Đang bán
+                                option(value="Inactive") Dừng bán
+                                option(value="ChangeManyPosition") Thay đổi vị trí
+                                option(value="DeleteManyItem") Xóa nhiều sản phẩm
+                        .form-group.ml-2
+                            input(
+                                style="display: none;"
+                                type="text"
+                                name="ids"
+                                value=""
+                                class = "form-control"
+                            )
+                        button.btn.btn-primary(
+                            type="submit"
+                        ) Lưu thay đổi
+                .col-4
+                    a(
+                        href=`${prefixAdmin}/product/create`
+                        class="btn btn-primary"
+                    ) + Thêm mới
+
+            table.table.table-hover.table-sm(
+                checkbox-multi
+            )
+                thead
+                    th
+                        input(type="checkbox" id="check-all")
+                    th STT
+                    th Hình ảnh
+                    th Tiêu đề
+                    th Giá
+                    th Vị trí
+                    th Trạng thái
+                    th Hành động
+                tbody
+                    each item, index in products
+                        tr.algn-items-center
+                            td
+                                input(type="checkbox" name="id" value=item._id)
+                            td #{index + 1}
+                            td
+                                img(
+                                    src= item.thumbnail,
+                                    alt= item.title,
+                                    style="width: 80px"
+                                )
+                            td #{item.title}
+                            td #{item.price}$
+                            td
+                                input(
+                                    type="number"
+                                    value=item.position
+                                    style="width: 50px"
+                                    min="1"
+                                    name="position"
+                                )
+                            td
+                                if(item.status == "Active")
+                                    a.badge.badge-success(
+                                        href = "javascript: ;"
+                                        data-status = item.status
+                                        data-id-status = item._id
+                                        btn-change-status
+                                    ) Đang bán
+                                else
+                                    a.badge.badge-danger(
+                                        href = "javascript: ;"
+                                        data-status = item.status
+                                        data-id-status = item._id
+                                        btn-change-status
+                                    ) Đã dừng bán
+                            td
+                                a(
+                                    href=`${prefixAdmin}/product/edit/${item._id}`
+                                    class="btn btn-primary btn-sm"
+                                ) Sửa
+                                button.btn.btn-danger.btn-sm(
+                                    btn-delete
+                                    data-id = item._id
+                                ) Xóa
+                                a(
+                                    href=`${prefixAdmin}/product/detail/${item._id}`
+                                    class="btn btn-info btn-sm"
+                                ) Chi tiết
+
+
+    //- phân trang
+    +pagination(pageObject)
+    script(src="/admin/js/product.js")
+
+    //- override method [GET] to [PATCH]
+    form(
+        action=""
+        method="POST"
+        id = "form-change-status"
+        data-patch = `${prefixAdmin}/product/changeStatus`
+    )
+    //- form delete :
+    form(
+        action=""
+        method="POST"
+        id= 'form-delete'
+        data-path= `${prefixAdmin}/product/delete`
+    )

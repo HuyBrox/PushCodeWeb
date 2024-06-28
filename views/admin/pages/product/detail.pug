@@ -1,0 +1,115 @@
+extends ../../layouts/default.pug
+
+block main
+    h1 Chi tiết sản phẩm
+    .card.mb-3
+        h4.card-header.text-info Thông tin sản phẩm
+        .card-body
+            .row
+                .col-lg-6.col-md-12
+                    .form-group
+
+                        label(for="title") Tiêu đề
+                        input(
+                            type="text"
+                            name="title"
+                            id="title"
+                            class="form-control"
+                            placeholder="Enter name"
+                            value=product.title
+                            readonly
+                        )
+                    .form-group
+                        label(for="price") Giá
+                        input(
+                            type="number"
+                            name="price"
+                            id="price"
+                            class="form-control"
+                            placeholder="Enter price"
+                            value=product.price
+                            readonly
+                        )
+                    .form-group
+                        label(for="stock") Số lượng
+                        input(
+                            type="number"
+                            name="stock"
+                            id="stock"
+                            class="form-control"
+                            placeholder="Enter stock"
+                            value=product.stock
+                            readonly
+                        )
+                    .form-group
+                        label(for="status") Trạng thái
+                        if product.status === 'Active'
+                            input(
+                                type="text"
+                                name="status"
+                                id="status"
+                                class="form-control text-success"
+                                placeholder="Enter status"
+                                value="Đang bán"
+                                readonly
+                            )
+                        else
+                            input(
+                                type="text"
+                                name="status"
+                                id="status"
+                                class="form-control text-danger"
+                                placeholder="Enter status"
+                                value="Đã dừng bán"
+                                readonly
+                            )
+                    .form-group
+                        label(for="description") Mô tả
+                        textarea(
+                            name="description"
+                            id="description"
+                            class="form-control"
+                            placeholder="Enter description"
+                            rows="5"
+                            readonly
+                        )= product.description
+                .col-lg-6.col-md-12
+                    .form-group
+                        label(for="thumbnail") Hình ảnh
+                        img(
+                            src=product.thumbnail
+                            alt=product.title
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                        )
+    .card.mb-3
+        h4.card-header.text-info Thông tin người tạo
+        .card-body
+            .row
+                .col-lg-6.col-md-12
+                    .form-group
+                        label(for="createdBy") Người tạo
+                        input(
+                            type="text"
+                            name="createdBy"
+                            id="createdBy"
+                            class="form-control"
+                            placeholder="Enter createdBy"
+                            value=product.createdBy
+                            readonly
+                        )
+                .col-lg-6.col-md-12
+                    .form-group
+                        label(for="createdAt") Ngày tạo
+                        input(
+                            type="text"
+                            name="createdAt"
+                            id="createdAt"
+                            class="form-control"
+                            placeholder="Enter createdAt"
+                            value=product.createdAt
+                            readonly
+                        )
+    a.btn.btn-primary(href=`/admin/product/edit/${product._id}` style="float: right; margin-bottom: 30px;") Chỉnh sửa
+
+
+

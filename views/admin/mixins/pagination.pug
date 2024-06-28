@@ -1,0 +1,10 @@
+mixin pagination(pageObject)
+    nav
+        ul.pagination
+            li.page-item
+                button.prev.page-link « Previous
+            -   for (var i=1; i<= pageObject.totalPage; i++)
+                li.page-item(class=(`${pageObject.currentPage === i? 'active' : ''}`) )
+                    button.page.page-link(btn-page = i) #{i}
+            li.page-item
+                button.next.page-link Next »

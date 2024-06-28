@@ -1,0 +1,21 @@
+extends ../../layout/default.pug
+include ../../mixins/box-head.pug
+//- th pug này phải viết cho đúng chứ k là lỗi ngay
+block main
+    .container.my-3
+        .row
+            .col-12
+                h1 #{product.title}
+                .row
+                    .col-6
+                        img(src=`${product.thumbnail}` alt=product.title width="100%" height="100%"
+                            style = "max-width: 500px;max-height: 650px; object-fit: cover;"
+                        )
+                    .col-6
+                        h3 #{(product.price-(product.price*(product.discountPercentage/100))).toFixed(2)} vnđ
+                        h3 #{product.price} vnđ
+                        h3 -#{product.discountPercentage}%
+                        h3 Số lượng: #{product.stock}
+                        h3 Trạng thái: #{product.status}
+                        h3 Mô tả: #{product.description}
+                        a(href=`/cart/add/${product._id}` class="btn btn-primary") Thêm vào giỏ hàng
