@@ -45,14 +45,20 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const port = 3000;
+//có caàn phải set dir như mấy cái này k anh. này anh nghĩ bỏ cũng được
+//anh dạy em bảo bỏ vào mới chạy onl với connect date base onl được á anh.
+//này đâu liên quan db đâu nhỉ
+//Ảnh bảo là phải set như v mới kết nối được mongo atlat
+//ủa sao vẫn connect được ta
+//cái __dirname không liên quan gì đến connect db cả
 
 //cấu hình pug:
-app.set('views', `${__dirname}/views`);
+app.set('views', `views`);
 app.set('view engine', 'pug');
 //Khai báo biến toàn cục
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 //Cấu hình public folder
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`public`));
 //route client
 route(app);
 //route admin
