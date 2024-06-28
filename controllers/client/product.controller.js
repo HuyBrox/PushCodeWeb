@@ -8,7 +8,7 @@ module.exports.index = async (req, res) => {
     }).sort({ position: -1 });
     res.render("client/pages/product/index", {
         pagesTitle: "Trang sản phẩm",
-        // dòng này để extract ra các product từ database gán vào biến products
+        // dòng này để extract ra các product từ database gán vào biến productss
         products: products
     })
 }
